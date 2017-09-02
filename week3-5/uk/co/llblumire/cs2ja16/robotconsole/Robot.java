@@ -42,8 +42,8 @@ public class Robot {
 	}
 	
 	/**
-	 * @param x The X coordinate to check robot precense against
-	 * @param y The Y coordinate to check robot precense against
+	 * @param sx The X coordinate to check robot precense against
+	 * @param sy The Y coordinate to check robot precense against
 	 * @return true if the robot is at the supplied coordinates, else false
 	 */
 	public boolean isHere(int sx, int sy) {

@@ -1,7 +1,7 @@
-/**
- * 
- */
 package uk.co.llblumire.cs2ja16.robotconsole;
+
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * @author Lucille
@@ -48,6 +48,30 @@ public class RobotArena {
 	}
 	
 	/**
+	 * Adds a robot to random empty coordinates
+	 */
+	public void addRobot() {
+		Random rng = new Random();
+		int randX; 
+		int randY;
+		do  {
+			randX = rng.nextInt(this.dimX);
+			randY = rng.nextInt(this.dimY);
+		} while (this.getRobotAt(randX, randY).isPresent());
+		this.robots[this.numRobots++] = new Robot(randX, randY); // Postincrement number of robots
+	}
+	
+	public Optional<Robot> getRobotAt(int x, int y) {
+		for (int i = 0; i < this.numRobots; ++i) {
+			Robot robot = this.getRobots()[i];
+			if (robot.getX() == x && robot.getY() == y) {
+				return Optional.of(robot);
+			}
+		}
+		return Optional.empty();
+	}
+	
+	/**
 	 * @return the dimX
 	 */
 	public int getDimX() {
@@ -81,12 +105,22 @@ public class RobotArena {
 	public Robot[] getRobots() {
 		return robots;
 	}
+	
+	@Override
+	public String toString() {
+		String buffer = new String();
+		for (int i = 0; i < this.getNumRobots(); ++i) {
+			buffer += this.getRobots()[i].toString() + "\n";
+		}
+		try {
+			buffer = buffer.substring(0, buffer.length()-1);
+		} catch (IndexOutOfBoundsException e) {
+			buffer = new String();
+		}
+		return buffer;
+	}
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		RobotArena ra = new RobotArena(10, 10, 4);
 	}
 	
