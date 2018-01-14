@@ -4,6 +4,8 @@
 	<classpathentry kind="src" path="/llb-util"/>
 	<classpathentry kind="src" path="week2"/>
 	<classpathentry kind="src" path="week3-5"/>
-	<classpathentry kind="src" path="week1"/>
+	<classpathentry kind="src" path="week7"/>
+	<classpathentry excluding="uk/co/llblumire/cs2ja16/week8/planets/" kind="src" path="week8"/>
+	<classpathentry kind="src" path="coureswork"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
