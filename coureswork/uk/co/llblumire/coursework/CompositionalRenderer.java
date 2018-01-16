@@ -14,6 +14,11 @@ import javafx.scene.canvas.GraphicsContext;
 public final class CompositionalRenderer implements Renderer {
 
 	/**
+	 * Serialisation ID
+	 */
+	private static final long serialVersionUID = -4925406122640833442L;
+	
+	/**
 	 * The renderers being composed.
 	 */
 	private ArrayList<Renderer> renderers;

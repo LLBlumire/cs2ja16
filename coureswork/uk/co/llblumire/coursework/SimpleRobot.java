@@ -12,6 +12,11 @@ import javafx.scene.paint.Color;
  */
 public class SimpleRobot implements Entity {
 	/**
+	 * Serialisation ID
+	 */
+	private static final long serialVersionUID = -8951189071453093040L;
+
+	/**
 	 * The x coordinate of the centre of the robot.
 	 */
 	protected double x;
@@ -40,6 +45,11 @@ public class SimpleRobot implements Entity {
 	 * The speed at which the robot rotates about it's centre.
 	 */
 	protected double turnSpeed;
+	
+	/**
+	 * The color of the robot.
+	 */
+	protected RGBA color;
 
 	/**
 	 * Constructs a SimpleRobot from it's fields.
@@ -51,6 +61,7 @@ public class SimpleRobot implements Entity {
 		this.rad = rad;
 		this.angle = angle;
 		this.turnSpeed = turnSpeed;
+		this.color = new RGBA(Color.RED);
 	}
 
 	@Override
@@ -60,7 +71,7 @@ public class SimpleRobot implements Entity {
 
 	@Override
 	public Renderer renderer() {
-		return new CompositionalRenderer(new CircleRenderer(this.x - this.rad, this.y - this.rad, this.rad, Color.RED),
+		return new CompositionalRenderer(new CircleRenderer(this.x - this.rad, this.y - this.rad, this.rad, this.color.toColor()),
 				new WheelRenderer(this.x, this.y, this.rad, this.angle));
 	}
 
@@ -79,6 +90,11 @@ public class SimpleRobot implements Entity {
 				}
 			}
 		};
+	}
+	
+	@Override
+	public String info() {
+		return String.format("SimpleRobot\n\to=(%.0f, %.0f)\n\tr=%.2f\n\ta=%.2f\n\ts=%.2f\n\tt=%.2f", this.x, this.y, this.rad, this.angle, this.speed, this.turnSpeed);
 	}
 
 }

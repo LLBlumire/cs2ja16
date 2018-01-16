@@ -1,7 +1,9 @@
 package uk.co.llblumire.coursework;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -10,7 +12,12 @@ import javafx.scene.canvas.GraphicsContext;
  * 
  * @author L. L. Blumire
  */
-public class Environment {
+public class Environment implements Serializable {
+	/**
+	 * Serial ID for Serialisation
+	 */
+	private static final long serialVersionUID = 8589107584206747115L;
+
 	/**
 	 * The entities kept within the environment.
 	 */
@@ -91,6 +98,15 @@ public class Environment {
 		this.entities.put(key, entity);
 		return key;
 	}
+	
+	/**
+	 * Returns the entity of a specific ID.
+	 * 
+	 * Returns null if there is no entity for a given key.
+	 */
+	public Entity getEntity(int key) {
+		return this.entities.get(key);
+	}
 
 	/**
 	 * Checks the collision of a specific Entity.
@@ -106,7 +122,7 @@ public class Environment {
 		}
 		for (Entity other : this.entities.values()) {
 			if (other != self) {
-				if (other.collider().collidesWith(self.collider())) {
+				if (self.collider().collidesWith(other.collider()).collides()) {
 					return true;
 				}
 			}
@@ -119,9 +135,12 @@ public class Environment {
 	 * @param gc The graphics context to draw on.
 	 */
 	public void render(GraphicsContext gc) {
+		ArrayList<Renderer> renderers = new ArrayList<Renderer>();
 		this.entities.forEach((id, entity) -> {
-			entity.renderer().render(gc);
+			renderers.add(entity.renderer());
 		});
+		renderers.sort((a, b) -> a.valency() < b.valency()? -1 : 1);
+		renderers.forEach((renderer) -> renderer.render(gc));
 	}
 
 	/**
@@ -148,6 +167,27 @@ public class Environment {
 	 */
 	public double getHeight() {
 		return height;
+	}
+
+	public String getInfo() {
+		StringBuffer buf = new StringBuffer();
+		this.entities.forEach((id, entity) -> {
+			buf.append(String.format("%d :: %s\n", id, entity.info()));
+		});
+		return buf.toString();
+	}
+
+	public void clear() {
+		this.entities.clear();
+	}
+	
+	public <T> T forEachEntity(Function<Integer, Function<Entity, Function<T, T>>> forEach, T initial) {
+		T state = initial;
+		for (Integer id : this.entities.keySet()) {
+			Entity entity = this.entities.get(id);
+			state = forEach.apply(id).apply(entity).apply(initial);
+		}
+		return state;
 	}
 
 }

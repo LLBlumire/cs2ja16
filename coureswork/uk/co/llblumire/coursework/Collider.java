@@ -17,11 +17,6 @@ import java.awt.geom.Rectangle2D;
  *
  */
 public abstract class Collider {
-	/**
-	 * Construct the universal collider, always collides.
-	 */
-	private Collider() {
-	}
 
 	/**
 	 * The universal collider is special, and is assumed to be a special case. It
@@ -29,7 +24,95 @@ public abstract class Collider {
 	 * 
 	 * @return true.
 	 */
-	public abstract boolean collidesWith(Collider c);
+	public abstract CollisionStatus collidesWith(Collider c);
+
+	/**
+	 * The status of a collision
+	 * 
+	 * @author L. L. Blumire
+	 *
+	 */
+	public enum CollisionStatus {
+		/**
+		 * Both colliders are hard and collide.
+		 */
+		Hard,
+		/**
+		 * The calling collider is hard and not the target and collide.
+		 */
+		SoftSelf,
+		/**
+		 * The target collider is hard and not the caller and collide.
+		 */
+		SoftOther,
+		/**
+		 * Both the target and the calling collider are not hard and collide.
+		 */
+		Soft,
+		/**
+		 * No collision occurred.
+		 */
+		None;
+
+		/**
+		 * Swaps SoftSelf and SoftOther, useful when a valency inverted call is made.
+		 */
+		public CollisionStatus selfToOther() {
+			if (this == CollisionStatus.SoftSelf) {
+				return CollisionStatus.SoftOther;
+			} else if (this == CollisionStatus.SoftOther) {
+				return CollisionStatus.SoftSelf;
+			} else {
+				return this;
+			}
+		}
+
+		/**
+		 * Checks for hard collision of a target.
+		 */
+		public boolean collides() {
+			switch (this) {
+			case Hard:
+			case SoftSelf:
+				return true;
+			case SoftOther:
+			case Soft:
+			case None:
+				return false;
+			}
+			return false;
+		}
+
+		/**
+		 * Assuming collision, turns two boolean hardness properties into a collision
+		 * status.
+		 */
+		public static CollisionStatus fromHardness(boolean selfHard, boolean otherHard) {
+			if (selfHard && otherHard) {
+				return CollisionStatus.Hard;
+			} else if (selfHard && !otherHard) {
+				return CollisionStatus.SoftOther;
+			} else if (!selfHard && otherHard) {
+				return CollisionStatus.SoftSelf;
+			} else if (!selfHard && !otherHard) {
+				return CollisionStatus.Soft;
+			} else {
+				// Should not run
+				return CollisionStatus.None;
+			}
+		}
+	}
+
+	/**
+	 * Whether the collider should be treated as hard (collider) or soft (senser)
+	 */
+	public boolean hardCollision = true;
+
+	/**
+	 * Construct the universal collider, always collides.
+	 */
+	private Collider() {
+	}
 
 	/**
 	 * The valency of a collider determines who handles computation of intersection.
@@ -59,9 +142,15 @@ public abstract class Collider {
 	 *
 	 */
 	public final static class NoCollider extends Collider {
+		/**
+		 * Trivial Constructor for NoCollider
+		 */
+		public NoCollider() {
+		}
+
 		@Override
-		public boolean collidesWith(Collider c) {
-			return false;
+		public CollisionStatus collidesWith(Collider c) {
+			return CollisionStatus.None;
 		}
 	}
 
@@ -103,23 +192,33 @@ public abstract class Collider {
 		}
 
 		@Override
-		public boolean collidesWith(Collider c) {
+		public CollisionStatus collidesWith(Collider c) {
 			if (valency(c) > valency(this)) {
-				return c.collidesWith(this);
+				return c.collidesWith(this).selfToOther();
 			} else {
 				if (c instanceof NoCollider) {
-					return false;
+					return CollisionStatus.None;
 				} else if (c instanceof BoxCollider) {
 					BoxCollider other = (BoxCollider) c;
-					return new Rectangle2D.Double(this.x, this.y, this.width, this.height).intersects(other.x, other.y,
-							other.width, other.height);
+					if (new Rectangle2D.Double(this.x, this.y, this.width, this.height).intersects(other.x, other.y,
+							other.width, other.height)) {
+						return CollisionStatus.fromHardness(this.hardCollision, other.hardCollision);
+					}
+					;
 				} else {
-					return false;
+					return CollisionStatus.None;
 				}
 			}
+			return CollisionStatus.None;
 		}
 	}
 
+	/**
+	 * Collides with anything that intersects the line segment.
+	 * 
+	 * @author L. L. Blumire
+	 *
+	 */
 	public final static class LineCollider extends Collider {
 		/**
 		 * The starting x coordinate of the line.
@@ -149,24 +248,30 @@ public abstract class Collider {
 		}
 
 		@Override
-		public boolean collidesWith(Collider c) {
+		public CollisionStatus collidesWith(Collider c) {
 			if (valency(c) > valency(this)) {
-				return c.collidesWith(this);
+				return c.collidesWith(this).selfToOther();
 			} else {
 				if (c instanceof NoCollider) {
-					return false;
+					return CollisionStatus.None;
 				} else if (c instanceof BoxCollider) {
 					BoxCollider other = (BoxCollider) c;
-					return new Line2D.Double(this.x, this.y, this.x + this.dx, this.y + this.dy)
-							.intersects(new Rectangle2D.Double(other.x, other.y, other.width, other.height));
+					if (new Line2D.Double(this.x, this.y, this.x + this.dx, this.y + this.dy)
+							.intersects(new Rectangle2D.Double(other.x, other.y, other.width, other.height))) {
+						return CollisionStatus.fromHardness(this.hardCollision, other.hardCollision);
+					}
 				} else if (c instanceof LineCollider) {
 					LineCollider other = (LineCollider) c;
-					return new Line2D.Double(this.x, this.y, this.x + this.dx, this.y + this.dy).intersectsLine(other.x,
-							other.y, other.x + other.dx, other.y + other.dy);
+					if (new Line2D.Double(this.x, this.y, this.x + this.dx, this.y + this.dy).intersectsLine(other.x,
+							other.y, other.x + other.dx, other.y + other.dy)) {
+						return CollisionStatus.fromHardness(this.hardCollision, other.hardCollision);
+					}
 				} else {
-					return false;
+					return CollisionStatus.None;
 				}
 			}
+			return CollisionStatus.None;
 		}
 	}
+
 }

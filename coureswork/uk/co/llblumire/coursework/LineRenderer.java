@@ -11,6 +11,11 @@ import javafx.scene.paint.Color;
  */
 public final class LineRenderer implements Renderer {
 	/**
+	 * Serialisation ID
+	 */
+	private static final long serialVersionUID = 5205573198136850423L;
+
+	/**
 	 * The color of the line.
 	 */
 	private Color color;

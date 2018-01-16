@@ -8,6 +8,11 @@ package uk.co.llblumire.coursework;
  */
 public final class LineColliderEntity implements Entity {
 	/**
+	 * Serialisation ID
+	 */
+	private static final long serialVersionUID = -6513483465912994076L;
+
+	/**
 	 * The initial x coordinate of the line.
 	 */
 	private double x;
@@ -50,6 +55,11 @@ public final class LineColliderEntity implements Entity {
 	@Override
 	public Updater updater() {
 		return new NoUpdater();
+	}
+	
+	@Override
+	public String info() {
+		return String.format("LineColliderEntity\n\to=(%.0f, %.0f)\n\td=(%.0f, %.0f)", this.x, this.y, this.dx, this.dy);
 	}
 
 }
