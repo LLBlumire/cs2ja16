@@ -46,6 +46,8 @@ public class RGBA implements Serializable {
 	
 	/**
 	 * Converts the RGBA to a JavaFX Color
+	 * 
+	 * @return a JavaFX Color equivalent of the caller.
 	 */
 	public Color toColor() {
 		return new Color(this.red, this.green, this.blue, this.alpha);

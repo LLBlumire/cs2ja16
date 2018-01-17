@@ -37,6 +37,10 @@ public final class StaticBlock implements Entity {
 	
 	/**
 	 * Constructs a StaticBlock from it's fields.
+	 * @param x The X coordinate of the top left of the block.
+	 * @param y The Y coordinate of the top left of the block.
+	 * @param width The width of the block.
+	 * @param height The height of the block.
 	 */
 	public StaticBlock(double x, double y, double width, double height) {
 		this.x = x;

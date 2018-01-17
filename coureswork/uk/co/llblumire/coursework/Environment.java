@@ -44,7 +44,9 @@ public class Environment implements Serializable {
 	private double height;
 
 	/**
-	 * Constructs the environment.
+	 * Constructs the Environment.
+	 * @param width The width of the Environment.
+	 * @param height The height of the Environment.
 	 */
 	public Environment(double width, double height) {
 		this.entities = new TreeMap<Integer, Entity>();
@@ -76,7 +78,8 @@ public class Environment implements Serializable {
 	 * Marks a key as free, removing the entity if one is associated. A key of -1 is
 	 * guaranteed to do nothing.
 	 *
-	 * @return
+	 * @param key
+	 *            The ID of the Entity to remove.
 	 */
 	public void removeEntity(int key) {
 		if (key == -1) {
@@ -91,6 +94,8 @@ public class Environment implements Serializable {
 	/**
 	 * Adds an entity to the Environment.
 	 * 
+	 * @param entity
+	 *            The Entity to add.
 	 * @return key The key of the added Entity.
 	 */
 	public int addEntity(Entity entity) {
@@ -98,11 +103,14 @@ public class Environment implements Serializable {
 		this.entities.put(key, entity);
 		return key;
 	}
-	
+
 	/**
 	 * Returns the entity of a specific ID.
 	 * 
-	 * Returns null if there is no entity for a given key.
+	 * @param key
+	 *            The ID of the Entity to get.
+	 * @return null if there is no entity for a given key, else the Entity
+	 *         corresponding with the key.
 	 */
 	public Entity getEntity(int key) {
 		return this.entities.get(key);
@@ -132,20 +140,24 @@ public class Environment implements Serializable {
 
 	/**
 	 * Renders the Environment.
-	 * @param gc The graphics context to draw on.
+	 * 
+	 * @param gc
+	 *            The graphics context to draw on.
 	 */
 	public void render(GraphicsContext gc) {
 		ArrayList<Renderer> renderers = new ArrayList<Renderer>();
 		this.entities.forEach((id, entity) -> {
 			renderers.add(entity.renderer());
 		});
-		renderers.sort((a, b) -> a.valency() < b.valency()? -1 : 1);
+		renderers.sort((a, b) -> a.valency() < b.valency() ? -1 : 1);
 		renderers.forEach((renderer) -> renderer.render(gc));
 	}
 
 	/**
 	 * Updates the environment.
-	 * @param dt The time since the previous update.
+	 * 
+	 * @param dt
+	 *            The time since the previous update.
 	 */
 	public void update(double dt) {
 		this.entities.forEach((id, entity) -> {
@@ -155,6 +167,7 @@ public class Environment implements Serializable {
 
 	/**
 	 * Getter for the width.
+	 * 
 	 * @return The width.
 	 */
 	public double getWidth() {
@@ -163,6 +176,7 @@ public class Environment implements Serializable {
 
 	/**
 	 * Getter for the height.
+	 * 
 	 * @return The height.
 	 */
 	public double getHeight() {
@@ -180,7 +194,7 @@ public class Environment implements Serializable {
 	public void clear() {
 		this.entities.clear();
 	}
-	
+
 	public <T> T forEachEntity(Function<Integer, Function<Entity, Function<T, T>>> forEach, T initial) {
 		T state = initial;
 		for (Integer id : this.entities.keySet()) {

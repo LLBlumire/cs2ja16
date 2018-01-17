@@ -22,7 +22,9 @@ public abstract class Collider {
 	 * The universal collider is special, and is assumed to be a special case. It
 	 * should probably never be used.
 	 * 
-	 * @return true.
+	 * @param c
+	 *            The collider to check collision with.
+	 * @return The result of a collision check.
 	 */
 	public abstract CollisionStatus collidesWith(Collider c);
 
@@ -44,6 +46,8 @@ public abstract class Collider {
 	 * Any unknown subclass will have Integer.MAX_VALUE valency and therefore will
 	 * be expected to handle collision with all other possible types of collider.
 	 * 
+	 * @param c
+	 *            the Collider to check the valency of.
 	 * @return the valency of the collider.
 	 */
 	final public static double valency(Collider c) {
@@ -88,6 +92,8 @@ public abstract class Collider {
 
 		/**
 		 * Swaps SoftSelf and SoftOther, useful when a valency inverted call is made.
+		 * 
+		 * @return A CollisionStatus with SoftSelf and SoftOther swapped.
 		 */
 		public CollisionStatus selfToOther() {
 			if (this == CollisionStatus.SoftSelf) {
@@ -101,6 +107,8 @@ public abstract class Collider {
 
 		/**
 		 * Checks for hard collision of a target.
+		 * 
+		 * @return true if collision occured.
 		 */
 		public boolean collides() {
 			switch (this) {
@@ -118,6 +126,13 @@ public abstract class Collider {
 		/**
 		 * Assuming collision, turns two boolean hardness properties into a collision
 		 * status.
+		 * 
+		 * @param selfHard
+		 *            The hardness property of the caller.
+		 * @param otherHard
+		 *            The hardness property of the collision target.
+		 * @return A CollisionStatus assuming collision with respect to the hardness of
+		 *         parameters.
 		 */
 		public static CollisionStatus fromHardness(boolean selfHard, boolean otherHard) {
 			if (selfHard && otherHard) {
@@ -134,7 +149,7 @@ public abstract class Collider {
 			}
 		}
 	}
-	
+
 	/**
 	 * Collides with nothing.
 	 * 
@@ -183,6 +198,15 @@ public abstract class Collider {
 
 		/**
 		 * A new box collider from it's x, y, width, and height.
+		 * 
+		 * @param x
+		 *            The x coordinate of the left of the box.
+		 * @param y
+		 *            The y coordinate of the top of the box.
+		 * @param width
+		 *            The width of the box.
+		 * @param height
+		 *            The height of the box.
 		 */
 		public BoxCollider(double x, double y, double width, double height) {
 			this.x = x;
@@ -239,6 +263,15 @@ public abstract class Collider {
 
 		/**
 		 * A line collider from it's x, y, and bounding box.
+		 * 
+		 * @param x
+		 *            The starting x coordinate of the line.
+		 * @param dx
+		 *            The change in the x position of the line from start to finish.
+		 * @param y
+		 *            The starting y coordinate of the line.
+		 * @param dy
+		 *            The change in the y position of the line from start to finish.
 		 */
 		public LineCollider(double x, double dx, double y, double dy) {
 			this.x = x;

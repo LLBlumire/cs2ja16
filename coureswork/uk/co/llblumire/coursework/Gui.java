@@ -27,6 +27,12 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Controls the front-facing user interface of the application.
+ * 
+ * @author L. L. Blumire
+ *
+ */
 public class Gui extends Application {
 
 	private final int DEFAULT_WIDTH = 800;
@@ -86,7 +92,8 @@ public class Gui extends Application {
 	 * Creates the menu of the application.
 	 * 
 	 * @param stage
-	 * @return
+	 *            The Stage of the GUI.
+	 * @return a MenuBar to add to the GUI.
 	 */
 	private MenuBar menu(Stage stage) {
 		Gui gui = this;
@@ -155,7 +162,7 @@ public class Gui extends Application {
 					try {
 						FileInputStream fileIn = new FileInputStream(file);
 						ObjectInputStream objIn = new ObjectInputStream(fileIn);
-						gui.environment = (Environment)objIn.readObject();
+						gui.environment = (Environment) objIn.readObject();
 						objIn.close();
 						fileIn.close();
 					} catch (IOException ioe) {
@@ -240,7 +247,7 @@ public class Gui extends Application {
 				int key = -1;
 				do {
 					gui.environment.removeEntity(key);
-					key = gui.environment.addEntity(gui.randomLightSenserRobot());
+					key = gui.environment.addEntity(gui.randomLightSensorRobot());
 				} while (gui.environment.checkCollisionOf(key));
 			}
 		});
@@ -252,6 +259,8 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a new SimpleRobot.
+	 * 
+	 * @return A randomly initialised SimpleRobot.
 	 */
 	private Entity randomSimpleRobot() {
 		double x = this.rng.nextDouble() * this.environment.getWidth();
@@ -270,6 +279,10 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a new WhiskerRobot.
+	 * 
+	 * @param keys
+	 *            The keys for the Whiskers of the Robot.
+	 * @return A randomly initialised WhiskerRobot.
 	 */
 	private Entity randomWhiskerRobot(Integer... keys) {
 		double x = this.rng.nextDouble() * this.environment.getWidth();
@@ -292,6 +305,8 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a new Wall.
+	 * 
+	 * @return A randomly initialised Wall Entity.
 	 */
 	private Entity randomWall() {
 		double x = this.rng.nextDouble() * this.environment.getWidth();
@@ -304,6 +319,8 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a new StaticBlock.
+	 * 
+	 * @return A randomly initialised StaticBlock Entity.
 	 */
 	private Entity randomStaticBlock() {
 		double x1 = this.rng.nextDouble() * this.environment.getWidth();
@@ -315,6 +332,8 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a random LightEmmiter.
+	 * 
+	 * @return A randomly initialised LightEmmiter Entity.
 	 */
 	public Entity randomLightEmmiter() {
 		double rad = 0.5 * this.rng.nextDouble() * Math.min(this.environment.getWidth(), this.environment.getHeight());
@@ -326,8 +345,10 @@ public class Gui extends Application {
 
 	/**
 	 * Generates a new LightSenserRobot.
+	 * 
+	 * @return A randomly initialised LightSensorRobot.
 	 */
-	private Entity randomLightSenserRobot() {
+	private Entity randomLightSensorRobot() {
 		double x = this.rng.nextDouble() * this.environment.getWidth();
 		double y = this.rng.nextDouble() * this.environment.getHeight();
 		double speed = (this.rng.nextDouble()
@@ -346,6 +367,8 @@ public class Gui extends Application {
 	 * Creates an AnimationTimer that Animates the canvas. Triggering updates and
 	 * renders.
 	 * 
+	 * @param canvas
+	 *            The canvas to draw on.
 	 * @return The canvas AnimationTime.
 	 */
 	private AnimationTimer animationTimer(Canvas canvas) {
@@ -371,6 +394,9 @@ public class Gui extends Application {
 
 	/**
 	 * Renders the GUI
+	 * 
+	 * @param canvas
+	 *            The canvas to draw on.
 	 */
 	private void render(Canvas canvas) {
 		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -382,6 +408,9 @@ public class Gui extends Application {
 
 	/**
 	 * Initialises the program.
+	 * 
+	 * @param args
+	 *            The arguments of the program. Unused.
 	 */
 	public static void main(String[] args) {
 		Gui.launch(args);

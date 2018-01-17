@@ -3,6 +3,13 @@ package uk.co.llblumire.coursework;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * Emits a field of light onto the Environment. This is detected via instanceof
+ * by LightSensorRobot.
+ * 
+ * @author L. L. Blumire
+ *
+ */
 public class LightEmmiter implements Entity {
 
 	/**
@@ -32,6 +39,15 @@ public class LightEmmiter implements Entity {
 
 	/**
 	 * Constructs a LightEmmiter from it's fields.
+	 * 
+	 * @param x
+	 *            The x coordinate of the centre of the light.
+	 * @param y
+	 *            The y coordinate of the centre of the light.
+	 * @param rad
+	 *            The radius of the light.
+	 * @param brightness
+	 *            The brightness of the light.
 	 */
 	public LightEmmiter(double x, double y, double rad, double brightness) {
 		this.x = x;
@@ -39,9 +55,11 @@ public class LightEmmiter implements Entity {
 		this.rad = rad;
 		this.brightness = brightness;
 	}
-	
+
 	/**
 	 * Getter for the brightness of the light.
+	 * 
+	 * @return The brightness property of the LightEmmiter.
 	 */
 	public double getBrightness() {
 		return this.brightness;
@@ -49,7 +67,7 @@ public class LightEmmiter implements Entity {
 
 	@Override
 	public Collider collider() {
-		Collider collider = new Collider.BoxCollider(x-rad, y-rad, rad*2, rad*2);
+		Collider collider = new Collider.BoxCollider(x - rad, y - rad, rad * 2, rad * 2);
 		collider.hardCollision = false;
 		return collider;
 	}
@@ -66,9 +84,10 @@ public class LightEmmiter implements Entity {
 
 			@Override
 			public void render(GraphicsContext gc) {
-				new RectangleRenderer(x-rad, y-rad, rad*2, rad*2, new Color(1.0, 1.0, 0.0, (1.0 - (1.0 / (1.0 + brightness))))).render(gc);
+				new RectangleRenderer(x - rad, y - rad, rad * 2, rad * 2,
+						new Color(1.0, 1.0, 0.0, (1.0 - (1.0 / (1.0 + brightness))))).render(gc);
 			}
-			
+
 			@Override
 			public int valency() {
 				return 10;

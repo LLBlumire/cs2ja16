@@ -28,6 +28,12 @@ public final class LightSensorRobot extends SimpleRobot {
 
 	/**
 	 * Construct a LightSenserRobot from it's fields.
+	 * @param x The x coordinate of the centre of the robot.
+	 * @param y The y coordinate of the centre of the robot.
+	 * @param speed The speed of the robot.
+	 * @param rad The radius of the robot.
+	 * @param angle The angle the robot is facing, in radians.
+	 * @param turnSpeed The speed at which the robot rotates about it's centre.
 	 */
 	public LightSensorRobot(double x, double y, double speed, double rad, double angle, double turnSpeed) {
 		super(x, y, speed, rad, angle, turnSpeed);

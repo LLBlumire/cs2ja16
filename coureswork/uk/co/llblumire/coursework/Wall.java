@@ -40,6 +40,11 @@ public final class Wall implements Entity {
 	
 	/**
 	 * Constructs a new Wall from it's fields.
+	 * @param x The initial x coordinate of the wall.
+	 * @param y The initial y coordinate of the wall.
+	 * @param dx The change in the x coordinate of the wall from start to finish.
+	 * @param dy The change in the y coordinate of the wall from start to finish.
+	 * @param thickness The graphical thickness of the wall (no collision effect)
 	 */
 	public Wall(double x, double y, double dx, double dy, double thickness) {
 		this.x = x;

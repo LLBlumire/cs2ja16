@@ -43,6 +43,11 @@ public final class RectangleRenderer implements Renderer {
 	
 	/**
 	 * Construct a RectangleRenderer from it's fields.
+	 * @param x The top right X coordinate of the rectangle.
+	 * @param y The top right Y coordinate of the rectangle.
+	 * @param width The width of the rectangle.
+	 * @param height The height of the rectangle.
+	 * @param color The colour to fill the rectangle with.
 	 */
 	public RectangleRenderer(double x, double y, double width, double height, Color color) {
 		this.x = x;

@@ -47,6 +47,12 @@ public final class LineRenderer implements Renderer {
 
 	/**
 	 * Constructs a LineRenderer from it's fields.
+	 * @param x The starting x coordinate of the line.
+	 * @param y The starting y coordinate of the line.
+	 * @param dx The change in the x position of the line from start to finish.
+	 * @param dy The change in the y position of the line from start to finish.
+	 * @param color The color of the line.
+	 * @param thickness The thickness of the line.
 	 */
 	public LineRenderer(double x, double y, double dx, double dy, Color color, double thickness) {
 		this.color = new RGBA(color);

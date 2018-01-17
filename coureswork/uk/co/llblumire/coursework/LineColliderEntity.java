@@ -34,6 +34,10 @@ public final class LineColliderEntity implements Entity {
 	
 	/**
 	 * Constructs a new LineColliderEntity from it's fields.
+	 * @param x The initial x coordinate of the line.
+	 * @param dx The change in the x position of the line from start to finish.
+	 * @param y The initial y coordinate of the line.
+	 * @param dy The change in the y position of the line from start to finish.
 	 */
 	public LineColliderEntity(double x, double dx, double y, double dy) {
 		this.x = x;

@@ -47,6 +47,16 @@ public final class WhiskerRobot extends SimpleRobot {
 	
 	/**
 	 * Construct a WhiskerRobot from it's fields.
+	 * @param x The x coordinate of the centre of the robot.
+	 * @param y The y coordinate of the centre of the robot.
+	 * @param speed The speed of the robot.
+	 * @param rad The radius of the robot.
+	 * @param angle The angle the robot is facing, in radians.
+	 * @param turnSpeed The speed at which the robot rotates about it's centre.
+	 * @param whiskerLength The length of each whisker.
+	 * @param whiskerInteriorAngle The angle between each whisker.
+	 * @param initialWhiskerAngle The angle offset of the first whisker.
+	 * @param whiskerIds The IDs of the connected whiskers.
 	 */
 	public WhiskerRobot(double x, double y, double speed, double rad, double angle, double turnSpeed, double whiskerLength, double whiskerInteriorAngle, double initialWhiskerAngle, Integer... whiskerIds) {
 		super(x, y, speed, rad, angle, turnSpeed);
@@ -61,7 +71,8 @@ public final class WhiskerRobot extends SimpleRobot {
 	/**
 	 * Synchronises the whiskers position to the WhiskerRobot.
 	 * 
-	 * @param onEach (whiskerId) -> (whiskerAngle) -> (whisker) -> { }
+	 * @param environment The Environment of the Whiskers and the WhiskerRobot.
+	 * @param onEach (whiskerId) -&gt; (whiskerAngle) -&gt; (whisker) -&gt; { }.
 	 */
 	private void syncWhiskersOnEach(Environment environment, Function<Integer, Function<Double, Consumer<Whisker>>> onEach) {
 		double whiskerAngle = this.initialWhiskerAngle;

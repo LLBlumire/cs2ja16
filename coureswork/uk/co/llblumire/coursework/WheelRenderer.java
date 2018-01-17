@@ -27,6 +27,10 @@ public final class WheelRenderer implements Renderer {
 	
 	/**
 	 * Construct a wheel renderer from the attached robots position.
+	 * @param x The x position of the robot the wheels are attached to.
+	 * @param y The y position of the robot the wheels are attached to.
+	 * @param rad The radius of the robot the wheels are attached to.
+	 * @param angle The angle in radians of the robot the wheels are attached to.
 	 */
 	public WheelRenderer(double x, double y, double rad, double angle) {
 		double lsx = rad * (Math.cos(angle - (Math.PI/2.0)) + Math.cos(angle)) + x;

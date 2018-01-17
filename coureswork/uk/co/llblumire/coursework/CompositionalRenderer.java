@@ -34,7 +34,7 @@ public final class CompositionalRenderer implements Renderer {
 	 * Compose constructor. Creates a CompositionalRenderer composing all Renderers
 	 * passed as input.
 	 * 
-	 * @param renderers
+	 * @param renderers The Renderer instances that are being composed.
 	 */
 	public CompositionalRenderer(Renderer... renderers) {
 		this.renderers = new ArrayList<Renderer>(Arrays.asList(renderers));
