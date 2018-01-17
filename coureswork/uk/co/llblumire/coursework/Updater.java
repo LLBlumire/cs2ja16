@@ -1,5 +1,7 @@
 package uk.co.llblumire.coursework;
 
+import java.io.Serializable;
+
 /**
  * Interface implemented by classes that facilitate being updated with respect
  * to an entity in an Environment, and the passage of time.
@@ -7,7 +9,7 @@ package uk.co.llblumire.coursework;
  * @author L. L. Blumire
  *
  */
-public interface Updater {
+public interface Updater extends Serializable {
 	/**
 	 * Updates the class.
 	 * 

@@ -1,0 +1,45 @@
+\documentclass[paper=a4,DIV=15,12pt,oneside]{scrreprt}
+
+\title{CS2JA16 Coursework}
+\author{Lucille Blumire}
+\date{}
+
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\tikzumlset{font=\tiny}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+
+\usepackage{lscape}
+\usepackage{textgreek}
+\usepackage{tabu,longtable}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage[export]{adjustbox}
+
+\def\zpublic{+ }%
+\def\zprivate{- }%
+\def\zprotected{\# }%
+\def\zabstract{\textit}%
+\def\zstatic#1{\underline{\smash#1}}%
+\def\zgen#1{\textless#1\textgreater}%
+\def\zarr{[]} %
+\def\zoverride{$\ll$override$\gg$}
+
+\begin{document}
+
+\input{0000-titlepage.tex}
+
+%\tableofcontents
+
+\input{0100-abstract.tex}
+\input{0200-oopdesign.tex}
+\input{0300-presentation.tex}
+\input{0500-tests.tex}
+\input{0600-conclusion.tex}
+\input{0700-reflection.tex}
+
+\end{document}

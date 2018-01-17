@@ -1,0 +1,252 @@
+\def\umlpackagename{coursework}
+\begin{landscape}
+\begin{tikzpicture}
+\begin{umlpackage}{\umlpackagename}
+
+\umlinterface{Entity}{}{
+    + \textit{collider() : Collider} \\
+    + \textit{renderer() : Renderer} \\
+    + \textit{updater() : Updater} \\
+    + \textit{info() : String}
+}
+
+\umlinterface[below=8em of Entity]{Renderer}{}{
+    \zpublic\zabstract{render(gc: GraphicsContext) : void} \\
+    \zpublic valency(): int 
+}
+
+\umlclass[below right=0em and 6em of Renderer]{NoRenderer}{}{}
+
+\umlclass[below=1em of NoRenderer]{CircleRenderer}{
+    \zprivate{color: RGBA} \\
+    \zprivate{x: double} \\
+    \zprivate{y: double} \\
+    \zprivate{rad: double}
+}{}
+
+\umlclass[below=1em of CircleRenderer]{CompositionalRenderer}{
+    \zprivate{renderers: ArrayList\zgen{Renderer}}
+}{}
+
+\umlclass[right=5em of NoRenderer]{LineRenderer}{
+    \zprivate{color: RGBA} \\
+    \zprivate{x: double} \\
+    \zprivate{dx: double} \\
+    \zprivate{y: double} \\
+    \zprivate{dy: double} \\
+    \zprivate{thickness: double}
+}{}
+
+\umlclass[below=1em of LineRenderer]{RectangleRenderer}{
+    \zprivate{x: double} \\
+    \zprivate{y: double} \\
+    \zprivate{width: double} \\
+    \zprivate{height: double} \\
+    \zprivate{color: RGBA}
+}{}
+
+\umlclass[below left=3em and -7em of Renderer]{WheelRenderer}{
+    \zprivate{leftWheel: LineRenderer} \\
+    \zprivate{rightWheel: LineRenderer} \\
+}{}
+
+\umlclass[right=4em of Entity]{Environment}{
+    \zprivate{entities: TreeMap\zgen{Integer, Entity}} \\
+    \zprivate{freeKeys: ArrayList\zgen{Integer}} \\
+    \zprivate{nextKey: int} \\
+    \zprivate{width: double} \\
+    \zprivate{height: double}
+}{
+    \zprivate{nextKey(): int} \\
+    \zpublic{removeEntity(key: int): void} \\
+    \zpublic{addEntity(entity: Entity): int} \\
+    \zpublic{getEntity(key: int): Entity} \\
+    \zpublic{checkCollisionOf(id: int): boolean} \\
+    \zpublic{render(GraphicsContext gc): void} \\
+    \zpublic{update(dt: double): void} \\
+    \zpublic{getWidth(): double} \\
+    \zpublic{getHeight(): double} \\
+    \zpublic{getInfo(): String} \\
+    \zpublic{clear(): void}
+}
+
+\umlclass[right=4em of Environment]{Gui}{
+    \zprivate{DEFAULT\_WIDTH: int = 800} \\
+    \zprivate{DEFAULT\_HEIGHT: int = 600} \\
+    \zprivate{DEFAULT\_ENV\_WIDTH: int = 500} \\
+    \zprivate{DEFAULT\_ENV\_HEIGHT: int = 500} \\
+    \zprivate{environment: Environment} \\
+    \zprivate{rng: Random} \\
+    \zprivate{simulationSpeed: double} \\
+    \zprivate{resumeSpeed: double} \\
+    \zprivate{info: Text}
+}{
+    \zprivate{menu(stage: Stage): MenuBar} \\
+    \zprivate{randomSimpleRobot(): Entity} \\
+    \zprivate{randomWhiskerRobot(): Entity} \\
+    \zprivate{randomWall(): Entity} \\
+    \zprivate{randomStaticBlock(): Entity} \\
+    \zprivate{randomLightEmmiter(): Entity} \\
+    \zprivate{randomLightSensorRobot(): Entity} \\
+    \zprivate{animationTime(canvas: Canvas): AnimationTimer} \\
+    \zprivate{render(canvas: Canvas): void} \\
+    \zpublic{main(args: String\zarr): void}
+}
+
+\umlinterface[below=2em of Gui]{Updater}{}{
+    \zpublic\zabstract{update(dt: double, environment: Environment, id: int): void}
+}
+
+\umlclass[below right=4em and -9em of Updater]{NoUpdater}{}{}
+
+\umlclass[below=2em of NoUpdater]{RGBA}{
+    \zpublic{red: double} \\
+    \zpublic{green: double} \\
+    \zpublic{blue: double} \\
+    \zpublic{alpha: double}
+}{
+    \zpublic{toColor(): Color}
+}
+
+
+\umlcompo{Environment}{Entity}
+\umlcompo{Gui}{Environment}
+\umlimpl[geometry=|-|]{NoUpdater}{Updater}
+\umlimpl[geometry=-|-]{NoRenderer}{Renderer}
+\umlimpl[geometry=-|-]{CircleRenderer}{Renderer}
+\umlimpl[geometry=-|-,anchor1=170]{CompositionalRenderer}{Renderer}
+\umlcompo[geometry=-|,anchor1=-170,anchor2=-30]{CompositionalRenderer}{Renderer}
+\umlimpl[geometry=-|-,anchor1=west,arm2=20em]{LineRenderer}{Renderer}
+\umlimpl[geometry=-|-,anchor1=west,arm2=20em]{RectangleRenderer}{Renderer}
+\umlimpl[geometry=|-|]{WheelRenderer}{Renderer}
+\end{umlpackage}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\begin{umlpackage}{\umlpackagename}
+
+\umlabstract{Collider}{
+    \zpublic{hardCollision: boolean = true}
+}{
+    \zpublic{collidesWith(c: Collider): CollisionStatus} \\
+    \zpublic{valency(c: Collider): double}
+}
+
+\umlenum[right=4em of Collider]{CollisionStatus}{
+    Hard \\
+    SoftSelf \\
+    SoftOther \\
+    Soft \\
+    None
+}{
+    \zpublic\zstatic{fromHardness(selfHard: boolean, otherHard: boolean): CollisionStatus} \\
+    \zpublic{selfToOther(): CollisionStatus} \\
+    \zpublic{collides(): boolean}
+}
+
+\umlclass[below left=4em and -5em of Collider]{NoCollider}{}{}
+\umlclass[below=2em of NoCollider]{BoxCollider}{
+    \zprivate{width: double} \\
+    \zprivate{height: double} \\
+    \zprivate{x: double} \\
+    \zprivate{y: double}
+}{}
+\umlclass[below=2em of BoxCollider]{LineCollider}{
+    \zprivate{x: double} \\
+    \zprivate{dx: double} \\
+    \zprivate{y: double} \\
+    \zprivate{dy: double}
+}{}
+
+\umlinterface[below right=3em and -4em of Collider]{Entity}{}{\vdots}
+
+\umlnote[above right=-3em and 4em of Entity,width=10em,anchor2=20]{Entity}{Defined in diagram on previous page.}
+
+\umlclass[below right=0em and 4em of Entity]{Whisker}{
+    \zpublic{x: double} \\
+    \zpublic{dx: double} \\
+    \zpublic{y: double} \\
+    \zpublic{dy: double} \\
+    \zpublic{thickness: double}
+}{}
+
+\umlclass[below=2em of Whisker]{SimpleRobot}{
+    \zprotected{x: double} \\
+    \zprotected{y: double} \\
+    \zprotected{speed: double} \\
+    \zprotected{rad: double} \\
+    \zprotected{angle: double} \\
+    \zprotected{turnSpeed: double} \\
+    \zprotected{color: RGBA}
+}{}
+
+\umlclass[right=4em of Whisker]{WhiskerRobot}{
+    \zprivate{whiskerLength: double} \\
+    \zprivate{whiskerIds: ArrayList\zgen{Integer}} \\
+    \zprivate{whiskerInteriorAngle: double} \\
+    \zprivate{intialWhiskerAngle: double} \\
+    \zprivate{turnMode: double} \\
+}{
+    \zprivate{syncWhiskersOnEach(environment: Environment,} \\
+    ~~~~~~onEach: \textlambda{}Integer.\textlambda{}Double.\textlambda{}Whisker.void): void \\
+    \zpublic{updater(): Updater \zoverride}
+    \zpublic{info(): String \zoverride}
+}
+
+\umlclass[right=4em of SimpleRobot]{LightSensorRobot}{
+    \zprivate{lastLight: double} \\
+    \zprivate{turnConstant: double} \\
+}{
+    \zpublic{info(): String \zoverride} \\
+    \zpublic{updater(): Updater \zoverride}
+}
+
+\umlclass[below=2em of SimpleRobot]{LightEmmiter}{
+    \zprivate{x: double} \\
+    \zprivate{y: double} \\
+    \zprivate{rad: double} \\
+    \zprivate{brightness: double}
+}{
+    \zpublic{getBrightness(): double}
+}
+
+\umlclass[below=2em of Entity]{LineColliderEntity}{
+    \zprivate{x: double} \\
+    \zprivate{dx: double} \\
+    \zprivate{y: double} \\
+    \zprivate{dy: double}
+}{}
+
+\umlclass[below=2em of LineColliderEntity]{Wall}{
+    \zprivate{x: double} \\
+    \zprivate{y: double} \\
+    \zprivate{dx: double} \\
+    \zprivate{dy: double} \\
+    \zprivate{thickness: double}
+}{}
+
+\umlclass[below=2em of Wall]{StatickBlock}{
+    \zprivate{x: double} \\
+    \zprivate{y: double} \\
+    \zprivate{width: double} \\
+    \zprivate{height: double}
+}{}
+
+
+\umlinherit[geometry=-|]{NoCollider}{Collider}
+\umlinherit[geometry=-|]{BoxCollider}{Collider}
+\umlinherit[geometry=-|]{LineCollider}{Collider}
+\umlinherit[geometry=-|-,anchor1=-170,anchor2=east,arm2=2em]{WhiskerRobot}{SimpleRobot}
+\umlinherit[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{LightSensorRobot}{SimpleRobot}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{SimpleRobot}{Entity}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{LightEmmiter}{Entity}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{LineColliderEntity}{Entity}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{Wall}{Entity}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{StatickBlock}{Entity}
+\umlimpl[geometry=-|-,anchor1=west,anchor2=east,arm2=2em]{Whisker}{Entity}
+\umlaggreg{Whisker}{WhiskerRobot}
+
+\end{umlpackage}
+\end{tikzpicture}
+
+\end{landscape}

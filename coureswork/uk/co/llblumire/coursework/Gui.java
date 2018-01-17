@@ -29,10 +29,10 @@ import javafx.stage.Stage;
 
 public class Gui extends Application {
 
-	private int DEFAULT_WIDTH = 800;
-	private int DEFAULT_HEIGHT = 600;
-	private int DEFAULT_ENV_WIDTH = 500;
-	private int DEFAULT_ENV_HEIGHT = 500;
+	private final int DEFAULT_WIDTH = 800;
+	private final int DEFAULT_HEIGHT = 600;
+	private final int DEFAULT_ENV_WIDTH = 500;
+	private final int DEFAULT_ENV_HEIGHT = 500;
 
 	/**
 	 * The Environment being rendered.
@@ -88,7 +88,7 @@ public class Gui extends Application {
 	 * @param stage
 	 * @return
 	 */
-	MenuBar menu(Stage stage) {
+	private MenuBar menu(Stage stage) {
 		Gui gui = this;
 
 		MenuBar mb = new MenuBar();
@@ -339,7 +339,7 @@ public class Gui extends Application {
 		double angle = this.rng.nextDouble() * Math.PI * 2.0;
 		double turnSpeed = (this.rng.nextDouble() * Math.PI * 2.0 * 0.1 + (Math.PI * 2.0 * 0.1))
 				* (rng.nextBoolean() ? 1 : -1);
-		return new LightSenserRobot(x, y, speed, rad, angle, turnSpeed);
+		return new LightSensorRobot(x, y, speed, rad, angle, turnSpeed);
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class Gui extends Application {
 	 * 
 	 * @return The canvas AnimationTime.
 	 */
-	AnimationTimer animationTimer(Canvas canvas) {
+	private AnimationTimer animationTimer(Canvas canvas) {
 		Gui gui = this;
 		return new AnimationTimer() {
 
@@ -372,7 +372,7 @@ public class Gui extends Application {
 	/**
 	 * Renders the GUI
 	 */
-	void render(Canvas canvas) {
+	private void render(Canvas canvas) {
 		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 		graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		graphicsContext.setFill(Color.WHITE);

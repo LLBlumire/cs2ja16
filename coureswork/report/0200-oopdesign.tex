@@ -1,0 +1,79 @@
+\chapter{Object Orientated Design}
+
+Ideas from Entity-Component-Systems have been borrowed to construct the basic Object Structure of the software. It's hierarchies are based on the ideas that an System composes Entities, and Entities compose Components. This encourages a composition over inheritance or composite reuse principle in the way code reuse and polymorphic behaviour is done.
+
+A full Entity-Component-System would however be over-complicated for the task as presented. It only requires one system, all entities have a similar set of requirements with respect to their components, and a number of Entities are directly related in an inheritance style i.e. All robots require all the fields and data of {\ttfamily SimpleRobot}, so while a Composition-Over-Inheritance system whereby some {\ttfamily RobotParts} control the basic functionality of all robots may be more `pure' to the other ideas and concepts being used, it adds complexity to the system where there perhaps needn't be any. 
+
+The simplified model of an ECS used in this project I will call for this document an Entity-Method-Environment (EME) whereby all Entities are simply objects that compose a fixed set of Methods (this leaves no room for component expansion, as specified by and ECS). and are composed inside of an Environment (which is singular, and allows any Entity Method to interact with all Entities of the Environment for computation).
+
+The fixed Methods composed by my Entity that are akin to the components of an ECS provide access from a Entity to the following.
+
+\begin{itemize}
+    \item Collider --- which specifies the collision model of the entity.
+    \item Renderer --- which specifies the rendering of the entity.
+    \item Updater --- which specifies the per-delta-time entity self-mutation with respect to the environment.
+    \item Info --- which provides text form information about the entity.
+\end{itemize}
+
+The core idea of the OOP Design of this project is to build up a suite of rendering and collision tools that can be used on any objects. Once the framework is built, adding in new robot or other entity types becomes a trivial matter of putting these components together like Lego. The one exception to this is the \texttt{Updater}s, which were left up to polymorphic inheritance of robot, and inline interface constructors providing their underlying functionality, this allows code additions to be incredibly flexible while remaining easy to build.
+
+Although it is not enforced by the code, \texttt{info} provided text in a standard format for consumption in the GUIs sidebar. This format was ``ClassName\textbackslash{}n\textbackslash{}tv1=\%F\textbackslash{}n\textbackslash{}tv2=\%F...'' where ClassName was the classes name; v1, v2, ... are the classes variables, and \%F is the output under a given format specifier (often \%.0f, \%.2f or \%d).
+
+All objects are expected to be {\ttfamily java.io.Serializable}, thus this inheritance is not shown on the following diagram.
+
+For the purpose of clarity, dependency relationships are not shown (as all classes are qualified, you will be able to trivially see dependency relationships wherever they occur by reading class names. In addition, the diagrams have been broken into multiple parts for clarity and spacing. In addition, as the code does not use partial interface or abstract class implementation anywhere, override methods on interface implementers and abstract class inheritors are not shown. Constructors are also omitted.
+
+\paragraph{Gui} is a public class that Extends Application. It provides an interface that can be interacted with by a user that composes an Environment and renders and updates all of the entities of that environment. It facilitates adding a variety of randomly generated entities, as well as saving and loading the environment from a file; and clearing the environment.
+
+\paragraph{Environment} is a public class that implements Serializable. It provides an environment that composes Entities and facilitates managing entities (adding, and removing them) as well as calling their underlying render and update methods.
+
+\paragraph{Entity} is a public interface extending Serializable that provides a set of methods that are used as common functionality across all types that are managed within an environment. It specifies their Collider, Renderer, Updater, and an information String.
+
+\paragraph{LightEmmiter} is a public class that implements Entity. It uses a soft BoxCollider to detect entities within its boundry (used for calculating light level by LightSensorRobots) and uses an underlying RectangleRenderer with a custom render valency to ensure it is drawn on top of other entities. It uses NoUpdater as its Updater.
+
+\paragraph{LineColliderEntity} is a public final class that implements Entity. It represents an invisible wall in the environment. It uses a LineCollider as its Collider, NoRenderer as its Renderer, and NoUpdater as its Updater.
+
+\paragraph{StaticBlock} is a public final class that implmenets Entity. It represents a single impassable block. It uses a BoxCollider as its Collider, a RectangleRenderer as its Renderer, and NoUpdater as its Updater.
+
+\paragraph{Wall} is a public final class that implements Entity. It represents a point to point linear impassable line in the environment. It uses LineCollider as its Collider, LineRenderer as its Renderer, and NoUpdater as its Updater.
+
+\paragraph{Whisker} is a public final class that implements Entity. It represents a whisker in the environment that is used by a WhiskerRobot to sense its environment. It uses a soft LineCollider as its Collider, LineRenderer as its Renderer, and NoUpdater as its Updater.
+
+\paragraph{SimpleRobot} is a public class that implements Entity. It is a robot that moves around the arena in a straight line until it hits another Entity's hard collider, at which point it turns and continues turning until moving no longer results in collision. It uses a BoxCollider as its Collider, a CompositionalRenderer of CircleRenderer and WheelRenderer as its Renderer, and a new custom constructed interface as its Updater.
+
+\paragraph{LightSensorRobot} is a public final class extending SimpleRobot. It is a robot that moves around the arena, and if it at any point detects the light level it is under decreases it attempts to turn to re-enter the light. It inherits its Renderer and Collider from SimpleRobot, and uses a new custom constructed interface as its Updater.
+
+\paragraph{WhiskerRobot} is a public final class that extends SimpleRobot. It is a robot that moves around the arena using two aggregated whiskers to detect its environment. If it detects a soft collision on one of it's aggregate whiskers it turns in the opposite direction the whisker is to it's current direction, otherwise it moves as the SimpleRobot. It inherits its Renderer and Collider from SimpleRobot and uses a new constructed interface as its Updater.
+
+\paragraph{Collider} is a public abstract class that functions as a Closed Union of all colliders. It specifies an abstract method that is used for collision detection, and a public field that determines if the collision should be treated as hard (collision) or soft (detection).
+
+\paragraph{CollisionStatus} is a public static enumerated value that outlines different possible Collision States based on the hardness of colliding bodies.
+
+\paragraph{NoCollider} is a public final static class extending Collider that provides a mechanism for detecting bounding box collision.
+
+\paragraph{LineCollider} is a public final static class extending Collider that provides a mechanism for detecting the intersectionality of line segments.
+
+\paragraph{Renderer} is a public interface that extends Serializable. It specifies a facility of a class to render something onto a GraphicsContext.
+
+\paragraph{NoRenderer} is a public final class that implements Renderer. It renders nothing and functions as a kind of `null' state for Entity Renderers.
+
+\paragraph{CircleRenderer} is a public final class that implements Renderer. It provides a mechanism for drawing circles.
+
+\paragraph{LineRenderer} is a public final class that implements Renderer. It provides a mechanism for drawing lines.
+
+\noindent{\small(class descriptions continue after diagrams)}
+
+\input{0210-oopdiagram.tex}
+
+\paragraph{RectangleRenderer} is a public final class that implements Renderer. It provides a mechanism for drawing rectangles.
+
+\paragraph{WheelRenderer} is a public final class that implements Renderer. it provides a mechanism for drawing wheels based on the position of a robot.
+
+\paragraph{CompositionalRenderer} is a public final class that implements Renderer. It provides a mechanism for composing other renderers and rendering out all of their render outputs at once.
+
+\paragraph{Updater} is a public interface that extends Serializable. It specifies a facility of a class to be updated with respect to a delta time (duration in milliseconds since the last time update was called), an Environment, and the ID of an entity within an environment (typically the one the Updater was returned by).
+
+\paragraph{NoUpdater} is a public final class that implements Updater. It updates nothing and functions as a kind of `null' state for Entity Updaters.
+
+\paragraph{RGBA} is a public class that implements Serializable. It exists to circumvent the lack of Serializable on a JavaFX Color type.
+

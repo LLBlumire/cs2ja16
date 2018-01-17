@@ -18,7 +18,7 @@ public final class LineRenderer implements Renderer {
 	/**
 	 * The color of the line.
 	 */
-	private Color color;
+	private RGBA color;
 
 	/**
 	 * The starting x coordinate of the line.
@@ -49,7 +49,7 @@ public final class LineRenderer implements Renderer {
 	 * Constructs a LineRenderer from it's fields.
 	 */
 	public LineRenderer(double x, double y, double dx, double dy, Color color, double thickness) {
-		this.color = color;
+		this.color = new RGBA(color);
 		this.x = x;
 		this.y = y;
 		this.dx = dx;
@@ -59,7 +59,7 @@ public final class LineRenderer implements Renderer {
 
 	@Override
 	public void render(GraphicsContext gc) {
-		gc.setStroke(this.color);
+		gc.setStroke(this.color.toColor());
 		gc.setLineWidth(this.thickness);
 		gc.strokeLine(x, y, x + dx, y + dy);
 	}

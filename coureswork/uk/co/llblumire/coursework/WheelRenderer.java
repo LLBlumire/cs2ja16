@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 
  * @author L. L. Blumire
  */
-public class WheelRenderer implements Renderer {
+public final class WheelRenderer implements Renderer {
 
 	/**
 	 * Serialisation ID
@@ -18,12 +18,12 @@ public class WheelRenderer implements Renderer {
 	/**
 	 * The left wheel of a robot.
 	 */
-	LineRenderer leftWheel;
+	private LineRenderer leftWheel;
 	
 	/**
 	 * The right wheel of a robot.
 	 */
-	LineRenderer rightWheel;
+	private LineRenderer rightWheel;
 	
 	/**
 	 * Construct a wheel renderer from the attached robots position.

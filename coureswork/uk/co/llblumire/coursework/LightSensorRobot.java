@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
  * @author L. L. Blumire
  *
  */
-public final class LightSenserRobot extends SimpleRobot {
+public final class LightSensorRobot extends SimpleRobot {
 
 	/**
 	 * Serialisation ID.
@@ -29,7 +29,7 @@ public final class LightSenserRobot extends SimpleRobot {
 	/**
 	 * Construct a LightSenserRobot from it's fields.
 	 */
-	public LightSenserRobot(double x, double y, double speed, double rad, double angle, double turnSpeed) {
+	public LightSensorRobot(double x, double y, double speed, double rad, double angle, double turnSpeed) {
 		super(x, y, speed, rad, angle, turnSpeed);
 		this.lastLight = 0.0;
 		this.turnConstant = 0.0;
@@ -45,9 +45,11 @@ public final class LightSenserRobot extends SimpleRobot {
 
 	@Override
 	public Updater updater() {
-		LightSenserRobot self = this;
+		LightSensorRobot self = this;
 		Updater superUpdater = super.updater();
 		return new Updater() {
+			private static final long serialVersionUID = 2046591705732672105L;
+
 			@Override
 			public void update(double dt, Environment environment, int id) {
 				superUpdater.update(dt, environment, id);

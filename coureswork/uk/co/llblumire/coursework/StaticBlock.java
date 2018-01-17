@@ -18,22 +18,22 @@ public final class StaticBlock implements Entity {
 	/**
 	 * The X coordinate of the top left of the block.
 	 */
-	double x;
+	private double x;
 	
 	/**
 	 * The Y coordinate of the top left of the block.
 	 */
-	double y;
+	private double y;
 	
 	/**
 	 * The width of the block.
 	 */
-	double width;
+	private double width;
 	
 	/**
 	 * The height of the block.
 	 */
-	double height;
+	private double height;
 	
 	/**
 	 * Constructs a StaticBlock from it's fields.

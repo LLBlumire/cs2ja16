@@ -27,12 +27,44 @@ public abstract class Collider {
 	public abstract CollisionStatus collidesWith(Collider c);
 
 	/**
+	 * Whether the collider should be treated as hard (collider) or soft (senser)
+	 */
+	public boolean hardCollision = true;
+
+	/**
+	 * Construct the universal collider, always collides.
+	 */
+	private Collider() {
+	}
+
+	/**
+	 * The valency of a collider determines who handles computation of intersection.
+	 * The highest valency collider always handles collision.
+	 * 
+	 * Any unknown subclass will have Integer.MAX_VALUE valency and therefore will
+	 * be expected to handle collision with all other possible types of collider.
+	 * 
+	 * @return the valency of the collider.
+	 */
+	final public static double valency(Collider c) {
+		if (c instanceof NoCollider) {
+			return 0;
+		} else if (c instanceof BoxCollider) {
+			return 1;
+		} else if (c instanceof LineCollider) {
+			return 2;
+		} else {
+			return Integer.MAX_VALUE;
+		}
+	}
+
+	/**
 	 * The status of a collision
 	 * 
 	 * @author L. L. Blumire
 	 *
 	 */
-	public enum CollisionStatus {
+	public static enum CollisionStatus {
 		/**
 		 * Both colliders are hard and collide.
 		 */
@@ -102,39 +134,7 @@ public abstract class Collider {
 			}
 		}
 	}
-
-	/**
-	 * Whether the collider should be treated as hard (collider) or soft (senser)
-	 */
-	public boolean hardCollision = true;
-
-	/**
-	 * Construct the universal collider, always collides.
-	 */
-	private Collider() {
-	}
-
-	/**
-	 * The valency of a collider determines who handles computation of intersection.
-	 * The highest valency collider always handles collision.
-	 * 
-	 * Any unknown subclass will have Integer.MAX_VALUE valency and therefore will
-	 * be expected to handle collision with all other possible types of collider.
-	 * 
-	 * @return the valency of the collider.
-	 */
-	final public static double valency(Collider c) {
-		if (c instanceof NoCollider) {
-			return 0;
-		} else if (c instanceof BoxCollider) {
-			return 1;
-		} else if (c instanceof LineCollider) {
-			return 2;
-		} else {
-			return Integer.MAX_VALUE;
-		}
-	}
-
+	
 	/**
 	 * Collides with nothing.
 	 * 

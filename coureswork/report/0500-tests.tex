@@ -1,0 +1,48 @@
+\chapter{Tests}
+\begingroup
+\def\arraystretch{1.3}%
+\begin{longtabu}{X[l]X[2,l]X[1.5,l]l}
+    Test Description & Expected Result & Actual Result & Pass \\\hline\endhead
+    A Simple Robot in the Environment.
+        & The robot runs around the environment, turning in a consistent direction, moving around the perimeter of the environment but not leaving it's boundaries.
+        & The robot moved anti-clockwise along the perimeter of the environment once it had pathed to it as expected.
+        & Yes. \\
+    Two Simple Robots in the Environment.
+        & The robots move around the environment, turning in a consistent direction, moving around the perimiter of the environment but not leaving its boundaries. If the robots come into contact with eachother they turn away eventually turn enough to leave eachother and stop being in contact.
+        & Both robots followed the perimeter clockwise, one was significantly faster than the other and caught up with it. Once the they were in contact, it turned off and passed the slower robot on the inside.
+        & Yes. \\
+    A Whisker Robot in the Environment.
+        & The robot moves towards a wall, until eventually one of its whiskers catches it, after which point it turns in the opposite direction the whisker is from it's direction of movement. It continues to circle the environment in this direction until eventually both it's left and right whiskers catch on an edge, at which point it will vibrate in a corner unsure of where to go.
+        & The robot began moving to the left edge of the environment, its right whisker caught and it turned anticlockwise. It approached the bottom left corner and it's right whisker caught the bottom wall first, resulting in it getting caught in the corner.
+        & Yes. \\
+    Multiple Whisker Robots.
+        & The whisker robots move as detailed above, however their whiskers only trigger on contact with the body of other whisker robots, not with the whiskers of other whisker robots.
+        & The robots moved around the environment, their whiskers intersecting freely without causing turning. When a whisker touched the body of another robot the robot corresponding to the whisker turned.
+        & Yes. \\
+    A Wall and a Robot.
+        & The robot paths as before around the edge of the environment, however upon coming into contact with the wall it turns and follows along the line traced out by the line segment of the wall until it re-collides with the environments edge.
+        & A wall was placed at a \ang{45} angle in the bottom left corner of the environment. An anticlockwise oriented robot moved as expected until it came to this corner where it followed the wall and continued to the top right of the environment.
+        & Yes. \\
+    A StaticBlock and some Robots.
+        & The robots are unable to pass through the block. Instead moving off the edge they collide with as if it were a wall.
+        & Robots move as expected about the block.
+        & Yes. \\
+    A LightSensorRobot and a LightEmmiter.
+        & The light sensor robot will path around the environment like a simple robot, until it enters an area of light. When it exits that area of light, it will begin turning sharply to re-enter the area of light.
+        & The robot pathed around the environment until it reached the light area in the top left. When it left the light area it sharply turned clockwise to re-enter the light.
+        & Yes. \\
+    Pausing and Resuming.
+        & Multiple robots will move around the environment as expected and outlined above. When Pause/Resume is clicked they will freeze in place. When it is clicked again they will continue pathing as they were originally.
+        & All robots moved as expected.
+        & Yes. \\
+    Clearing.
+        & Pressing clear will remove all entities other than the LineColliderEntity's that make up the environment walls.
+        & The environment was cleared as expected.
+        & Yes. \\
+    Saving and Loading.
+        & When `Save' is clicked the current state of the environment will be written into a file specified by the dialog that appears. Another robot can then be added or the environment `Clear'ed and the file can be `Load'ed with another file selector.
+        & 5 robots were placed in the environment. Clicking `Save' opened a dialog and made the specified file. Another Simple robot was added. `Load' was clicked and the file selected. The environment reset to the save state, robots in their old positions, and the new SimpleRobot not added.
+        & Yes. \\
+\end{longtabu}
+\endgroup
+\vspace{-7.5em} % I hate myself

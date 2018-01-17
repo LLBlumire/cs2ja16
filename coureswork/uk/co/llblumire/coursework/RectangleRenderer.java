@@ -39,7 +39,7 @@ public final class RectangleRenderer implements Renderer {
 	/**
 	 * The colour to fill the rectangle with.
 	 */
-	private Color color;
+	private RGBA color;
 	
 	/**
 	 * Construct a RectangleRenderer from it's fields.
@@ -49,12 +49,12 @@ public final class RectangleRenderer implements Renderer {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.color = color;
+		this.color = new RGBA(color);
 	}
 	
 	@Override
 	public void render(GraphicsContext gc) {
-		gc.setFill(this.color);
+		gc.setFill(this.color.toColor());
 		gc.fillRect(this.x, this.y, this.width, this.height);
 	}
 

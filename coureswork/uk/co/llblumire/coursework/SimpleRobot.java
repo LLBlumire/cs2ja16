@@ -79,6 +79,8 @@ public class SimpleRobot implements Entity {
 	public Updater updater() {
 		SimpleRobot self = this;
 		return new Updater() {
+			private static final long serialVersionUID = -5295428573149262062L;
+
 			@Override
 			public void update(double dt, Environment e, int id) {
 				self.x += Math.cos(self.angle) * self.speed * dt;

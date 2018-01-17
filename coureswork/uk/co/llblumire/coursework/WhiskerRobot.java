@@ -86,6 +86,8 @@ public final class WhiskerRobot extends SimpleRobot {
 		WhiskerRobot self = this;
 		
 		return new Updater() {
+			private static final long serialVersionUID = 7021464126471165374L;
+
 			@Override
 			public void update(double dt, Environment environment, int id) {
 				

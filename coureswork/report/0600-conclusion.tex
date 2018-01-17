@@ -1,0 +1,9 @@
+\chapter{Conclusion}
+
+The project was built on top of principles of object oriented programming. The design space encouraged a composition-over-inheritance viewpoint, as the particular use case of simulating the interactions of robots can draw from physical design aspects of having a set of smaller components build up to a larger robot whole. However, inheritance proved useful for the subclassing of robots, as despite all robots being made from a set of smaller components compositionally, all robots also use a similar base of parts (SimpleRobot) onto which other more complex components can be added. This combination of Composition and Inheritance kept code as DRY as possible.
+
+I chose to use a variant of the Entity-Component-System I named an Entity-Method-Environment that followed a simplified model of the ECS format. This allowed for quick development and rapid iteration of existing components when implementing new entities and robots.
+
+Were I to repeat this again I would endeavour to build a more versatile Entity system, possibly more in line with a traditional ECS rather than my own EME format which had the drawbacks of being inextensible past the point of simple objects, and required additional definitions of `null' like No-OP classes for rendering, updating, and collision. In addition to this, I would use the existing architecture built up to implement a larger number of robots and other entities for environment simulation to provide a more diverse set of tools the simulations could be run using.
+
+Overall, I feel the project was a success, demonstrating the benefits of various OOP design spaces and the JavaFX GUI system---which provided a great deal of utility in constructing the user interface that facilitated the front-facing portion of this project.

@@ -18,27 +18,27 @@ public final class Whisker implements Entity {
 	/** 
 	 * The starting x coordinate of the whisker.
 	 */
-	double x;
+	public double x;
 	
 	/**
 	 * The change in the x coordinate of the whisker from start to finish.
 	 */
-	double dx; 
+	public double dx; 
 	
 	/**
 	 * The starting y coordinate of the whisker.
 	 */
-	double y;
+	public double y;
 	
 	/**
 	 * The change in the y coordinate of the whisker from start to finish.
 	 */
-	double dy;
+	public double dy;
 	
 	/**
 	 * The thickness of the whisker.
 	 */
-	double thickness;
+	public double thickness;
 	
 	public Whisker() {
 		this.x = 0;
